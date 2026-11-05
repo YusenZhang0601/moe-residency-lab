@@ -1,0 +1,417 @@
+{
+  "AUTO_DYNAMIC": {
+    "min_free_gib": 1.4977760314941406,
+    "cases": {
+      "warm_four": {
+        "wall_s": 17.078999999910593,
+        "first_reason_s": [
+          1.851712099974975,
+          0.8333395000081509,
+          2.268089200137183,
+          2.793828799854964
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          29
+        ]
+      },
+      "warm_two": {
+        "wall_s": 14.405999999959022,
+        "first_reason_s": [
+          3.872370900120586,
+          1.5281264998484403
+        ],
+        "first_text_s": [
+          null,
+          null
+        ],
+        "output_tokens": 1024,
+        "new_input_tokens": [
+          28,
+          28
+        ]
+      },
+      "warm_solo": {
+        "wall_s": 6.405999999959022,
+        "first_reason_s": [
+          1.1061805000063032
+        ],
+        "first_text_s": [
+          null
+        ],
+        "output_tokens": 512,
+        "new_input_tokens": [
+          28
+        ]
+      },
+      "warm_four_return": {
+        "wall_s": 22.484000000171363,
+        "first_reason_s": [
+          5.342723599867895,
+          3.836036799941212,
+          1.1156687999609858,
+          7.6719406000338495
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    "batch_summaries": [
+      "strata batch: 325 windows, avg 6.29 rows, 43.91 ms/window = run 38.70 (CUDA0 GPU-reach wait 36.41 + CPU experts 0.90) + commit 2.01 + emit 3.14 + adapt wait 0.06; per stage (ms/window): CUDA0 wait 36.41 + pool 0.90; per layer-window: CPU experts 0.17, VRAM hits 79.91, PCIe 0.00; routed entries per window: VRAM 3835.9 (99.8%), PCIe 0.0 (0.0%), CPU 8.6 (0.2%); adaptive tier (async): 82 rounds started, 489 experts swapped in; 127.8 rows/s over 15989 ms of wall time (admissions included)",
+      "strata batch: 316 windows, avg 3.13 rows, 26.29 ms/window = run 23.53 (CUDA0 GPU-reach wait 23.03 + CPU experts 0.33) + commit 1.05 + emit 1.68 + adapt wait 0.03; per stage (ms/window): CUDA0 wait 23.03 + pool 0.33; per layer-window: CPU experts 0.05, VRAM hits 40.65, PCIe 0.00; routed entries per window: VRAM 1951.1 (99.9%), PCIe 0.0 (0.0%), CPU 2.3 (0.1%); adaptive tier (async): 79 rounds started, 80 experts swapped in; 87.8 rows/s over 11254 ms of wall time (admissions included)",
+      "strata batch: 333 windows, avg 6.14 rows, 43.72 ms/window = run 38.53 (CUDA0 GPU-reach wait 37.43 + CPU experts 0.65) + commit 2.01 + emit 3.14 + adapt wait 0.04; per stage (ms/window): CUDA0 wait 37.43 + pool 0.65; per layer-window: CPU experts 0.05, VRAM hits 80.43, PCIe 0.00; routed entries per window: VRAM 3860.4 (99.9%), PCIe 0.0 (0.0%), CPU 2.6 (0.1%); adaptive tier (async): 84 rounds started, 97 experts swapped in; 100.8 rows/s over 20268 ms of wall time (admissions included)"
+    ]
+  },
+  "GPU28_DYNAMIC": {
+    "min_free_gib": 8.89621353149414,
+    "cases": {
+      "warm_four": {
+        "wall_s": 17.359000000171363,
+        "first_reason_s": [
+          1.4768472001887858,
+          2.094908299855888,
+          2.5171029998455197,
+          0.5960017999168485
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      },
+      "warm_two": {
+        "wall_s": 12.952999999979511,
+        "first_reason_s": [
+          1.1650233999826014,
+          3.3982692998833954
+        ],
+        "first_text_s": [
+          null,
+          null
+        ],
+        "output_tokens": 1024,
+        "new_input_tokens": [
+          28,
+          28
+        ]
+      },
+      "warm_solo": {
+        "wall_s": 7.1560000001918525,
+        "first_reason_s": [
+          1.7469303000252694
+        ],
+        "first_text_s": [
+          null
+        ],
+        "output_tokens": 512,
+        "new_input_tokens": [
+          28
+        ]
+      },
+      "warm_four_return": {
+        "wall_s": 21.406999999890104,
+        "first_reason_s": [
+          4.035173500189558,
+          1.922516900114715,
+          5.4727107000071555,
+          6.489451700123027
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    "batch_summaries": [
+      "strata batch: 336 windows, avg 6.08 rows, 44.36 ms/window = run 39.13 (CUDA0 GPU-reach wait 35.84 + CPU experts 1.93) + commit 2.01 + emit 3.14 + adapt wait 0.08; per stage (ms/window): CUDA0 wait 35.84 + pool 1.93; per layer-window: CPU experts 0.72, VRAM hits 78.77, PCIe 0.00; routed entries per window: VRAM 3781.1 (99.0%), PCIe 0.1 (0.0%), CPU 38.8 (1.0%); adaptive tier (async): 85 rounds started, 2083 experts swapped in; 123.5 rows/s over 16545 ms of wall time (admissions included)",
+      "strata batch: 334 windows, avg 3.06 rows, 26.25 ms/window = run 23.51 (CUDA0 GPU-reach wait 22.84 + CPU experts 0.43) + commit 1.03 + emit 1.65 + adapt wait 0.05; per stage (ms/window): CUDA0 wait 22.84 + pool 0.43; per layer-window: CPU experts 0.10, VRAM hits 39.72, PCIe 0.00; routed entries per window: VRAM 1906.5 (99.7%), PCIe 0.0 (0.0%), CPU 4.8 (0.3%); adaptive tier (async): 83 rounds started, 164 experts swapped in; 88.0 rows/s over 11597 ms of wall time (admissions included)",
+      "strata batch: 327 windows, avg 6.25 rows, 45.19 ms/window = run 39.85 (CUDA0 GPU-reach wait 37.54 + CPU experts 1.09) + commit 2.06 + emit 3.22 + adapt wait 0.07; per stage (ms/window): CUDA0 wait 37.54 + pool 1.09; per layer-window: CPU experts 0.26, VRAM hits 81.56, PCIe 0.00; routed entries per window: VRAM 3915.1 (99.7%), PCIe 0.0 (0.0%), CPU 13.0 (0.3%); adaptive tier (async): 82 rounds started, 436 experts swapped in; 110.0 rows/s over 18579 ms of wall time (admissions included)"
+    ]
+  },
+  "GPU25_DYNAMIC": {
+    "min_free_gib": 11.93722915649414,
+    "cases": {
+      "warm_four": {
+        "wall_s": 17.156000000191852,
+        "first_reason_s": [
+          0.5883510999847203,
+          2.046444799983874,
+          2.4615585999563336,
+          1.410933299921453
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          29,
+          28,
+          28,
+          28
+        ]
+      },
+      "warm_two": {
+        "wall_s": 12.734999999869615,
+        "first_reason_s": [
+          3.4737025001086295,
+          1.152067800052464
+        ],
+        "first_text_s": [
+          null,
+          null
+        ],
+        "output_tokens": 1024,
+        "new_input_tokens": [
+          28,
+          28
+        ]
+      },
+      "warm_solo": {
+        "wall_s": 6.469000000040978,
+        "first_reason_s": [
+          1.7417202999349684
+        ],
+        "first_text_s": [
+          null
+        ],
+        "output_tokens": 512,
+        "new_input_tokens": [
+          28
+        ]
+      },
+      "warm_four_return": {
+        "wall_s": 21.375,
+        "first_reason_s": [
+          6.40881869988516,
+          2.308824400184676,
+          1.3591301999986172,
+          4.584418100072071
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    "batch_summaries": [
+      "strata batch: 327 windows, avg 6.25 rows, 45.16 ms/window = run 39.79 (CUDA0 GPU-reach wait 36.13 + CPU experts 2.34) + commit 2.05 + emit 3.23 + adapt wait 0.09; per stage (ms/window): CUDA0 wait 36.13 + pool 2.34; per layer-window: CPU experts 0.96, VRAM hits 79.74, PCIe 0.00; routed entries per window: VRAM 3827.6 (98.7%), PCIe 0.1 (0.0%), CPU 50.4 (1.3%); adaptive tier (async): 82 rounds started, 2523 experts swapped in; 124.9 rows/s over 16356 ms of wall time (admissions included)",
+      "strata batch: 316 windows, avg 3.23 rows, 26.83 ms/window = run 23.99 (CUDA0 GPU-reach wait 22.81 + CPU experts 1.06) + commit 1.06 + emit 1.70 + adapt wait 0.08; per stage (ms/window): CUDA0 wait 22.81 + pool 1.06; per layer-window: CPU experts 0.44, VRAM hits 40.16, PCIe 0.00; routed entries per window: VRAM 1927.7 (98.8%), PCIe 0.0 (0.0%), CPU 22.6 (1.2%); adaptive tier (async): 79 rounds started, 1060 experts swapped in; 89.7 rows/s over 11377 ms of wall time (admissions included)",
+      "strata batch: 332 windows, avg 6.15 rows, 44.68 ms/window = run 39.38 (CUDA0 GPU-reach wait 37.25 + CPU experts 1.29) + commit 2.03 + emit 3.18 + adapt wait 0.08; per stage (ms/window): CUDA0 wait 37.25 + pool 1.29; per layer-window: CPU experts 0.37, VRAM hits 80.51, PCIe 0.00; routed entries per window: VRAM 3864.4 (99.5%), PCIe 0.0 (0.0%), CPU 19.0 (0.5%); adaptive tier (async): 84 rounds started, 833 experts swapped in; 103.7 rows/s over 19709 ms of wall time (admissions included)"
+    ]
+  },
+  "GPU28_STATIC": {
+    "min_free_gib": 8.97824478149414,
+    "cases": {
+      "warm_four": {
+        "wall_s": 17.719000000040978,
+        "first_reason_s": [
+          2.04191969987005,
+          1.4201020998880267,
+          0.6201566001400352,
+          2.49381130002439
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      },
+      "warm_two": {
+        "wall_s": 13.030999999959022,
+        "first_reason_s": [
+          3.443712499924004,
+          1.182647799840197
+        ],
+        "first_text_s": [
+          null,
+          null
+        ],
+        "output_tokens": 1024,
+        "new_input_tokens": [
+          28,
+          28
+        ]
+      },
+      "warm_solo": {
+        "wall_s": 7.219000000040978,
+        "first_reason_s": [
+          1.784969300031662
+        ],
+        "first_text_s": [
+          null
+        ],
+        "output_tokens": 512,
+        "new_input_tokens": [
+          28
+        ]
+      },
+      "warm_four_return": {
+        "wall_s": 22.29700000002049,
+        "first_reason_s": [
+          1.074667900102213,
+          5.020165299996734,
+          6.9718626998364925,
+          3.522748799994588
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    "batch_summaries": [
+      "strata batch: 332 windows, avg 6.15 rows, 46.07 ms/window = run 40.17 (CUDA0 GPU-reach wait 31.88 + CPU experts 7.03) + commit 2.12 + emit 3.78 + adapt wait 0.00; per stage (ms/window): CUDA0 wait 31.88 + pool 7.03; per layer-window: CPU experts 3.93, VRAM hits 73.67, PCIe 0.05; routed entries per window: VRAM 3536.0 (92.4%), PCIe 2.8 (0.1%), CPU 289.7 (7.6%); 121.1 rows/s over 16867 ms of wall time (admissions included)",
+      "strata batch: 317 windows, avg 3.22 rows, 27.71 ms/window = run 24.60 (CUDA0 GPU-reach wait 20.14 + CPU experts 4.34) + commit 1.14 + emit 1.98 + adapt wait 0.00; per stage (ms/window): CUDA0 wait 20.14 + pool 4.34; per layer-window: CPU experts 2.41, VRAM hits 37.29, PCIe 0.01; routed entries per window: VRAM 1790.0 (91.8%), PCIe 0.5 (0.0%), CPU 159.8 (8.2%); 87.8 rows/s over 11635 ms of wall time (admissions included)",
+      "strata batch: 326 windows, avg 6.27 rows, 46.27 ms/window = run 40.35 (CUDA0 GPU-reach wait 32.85 + CPU experts 6.99) + commit 2.14 + emit 3.79 + adapt wait 0.00; per stage (ms/window): CUDA0 wait 32.85 + pool 6.99; per layer-window: CPU experts 3.95, VRAM hits 74.79, PCIe 0.06; routed entries per window: VRAM 3590.1 (92.8%), PCIe 3.1 (0.1%), CPU 276.2 (7.1%); 100.5 rows/s over 20331 ms of wall time (admissions included)"
+    ]
+  },
+  "GPU28_PERIODIC64": {
+    "min_free_gib": 9.01730728149414,
+    "cases": {
+      "warm_four": {
+        "wall_s": 17.390000000130385,
+        "first_reason_s": [
+          2.507596299983561,
+          1.4083968999329954,
+          2.059661400038749,
+          0.6177423000335693
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      },
+      "warm_two": {
+        "wall_s": 12.968999999808148,
+        "first_reason_s": [
+          3.5242764002177864,
+          1.1692639000248164
+        ],
+        "first_text_s": [
+          null,
+          null
+        ],
+        "output_tokens": 1024,
+        "new_input_tokens": [
+          28,
+          28
+        ]
+      },
+      "warm_solo": {
+        "wall_s": 6.797000000020489,
+        "first_reason_s": [
+          1.743494899943471
+        ],
+        "first_text_s": [
+          null
+        ],
+        "output_tokens": 512,
+        "new_input_tokens": [
+          28
+        ]
+      },
+      "warm_four_return": {
+        "wall_s": 21.844000000040978,
+        "first_reason_s": [
+          1.076646599918604,
+          4.972270600032061,
+          3.4841499000322074,
+          6.908410399919376
+        ],
+        "first_text_s": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "output_tokens": 2048,
+        "new_input_tokens": [
+          28,
+          28,
+          28,
+          28
+        ]
+      }
+    },
+    "batch_summaries": [
+      "strata batch: 332 windows, avg 6.15 rows, 45.09 ms/window = run 39.77 (CUDA0 GPU-reach wait 33.87 + CPU experts 4.74) + commit 2.10 + emit 3.21 + adapt wait 0.01; per stage (ms/window): CUDA0 wait 33.87 + pool 4.74; per layer-window: CPU experts 2.38, VRAM hits 76.89, PCIe 0.02; routed entries per window: VRAM 3690.9 (95.9%), PCIe 1.0 (0.0%), CPU 156.8 (4.1%); adaptive tier (async): 5 rounds started, 480 experts swapped in; 123.5 rows/s over 16544 ms of wall time (admissions included)",
+      "strata batch: 322 windows, avg 3.17 rows, 26.79 ms/window = run 24.02 (CUDA0 GPU-reach wait 22.73 + CPU experts 1.16) + commit 1.06 + emit 1.70 + adapt wait 0.01; per stage (ms/window): CUDA0 wait 22.73 + pool 1.16; per layer-window: CPU experts 0.48, VRAM hits 40.21, PCIe 0.00; routed entries per window: VRAM 1930.2 (98.7%), PCIe 0.0 (0.0%), CPU 25.5 (1.3%); adaptive tier (async): 5 rounds started, 480 experts swapped in; 88.3 rows/s over 11565 ms of wall time (admissions included)",
+      "strata batch: 334 windows, avg 6.12 rows, 44.05 ms/window = run 38.86 (CUDA0 GPU-reach wait 37.20 + CPU experts 0.96) + commit 2.02 + emit 3.17 + adapt wait 0.01; per stage (ms/window): CUDA0 wait 37.20 + pool 0.96; per layer-window: CPU experts 0.21, VRAM hits 80.20, PCIe 0.00; routed entries per window: VRAM 3849.5 (99.7%), PCIe 0.0 (0.0%), CPU 10.6 (0.3%); adaptive tier (async): 5 rounds started, 480 experts swapped in; 102.6 rows/s over 19903 ms of wall time (admissions included)"
+    ]
+  }
+}

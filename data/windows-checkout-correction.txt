@@ -1,0 +1,10 @@
+First Windows checkout failure, 2026-11-05, run 42052385228.
+Selected actual traceback lines, runner checkout path normalized.
+
+2026-11-05T15:11:31.9651600Z Traceback (most recent call last):
+2026-11-05T15:11:31.9656741Z   File "<runner-checkout>\examples\verify_results.py", line 69, in <module>
+2026-11-05T15:11:31.9687169Z   File "<runner-checkout>\examples\verify_results.py", line 19, in main
+2026-11-05T15:11:31.9688177Z     assert hashlib.sha256((ROOT / source["file"]).read_bytes()).hexdigest() == source["sha256"]
+2026-11-05T15:11:31.9725030Z AssertionError
+
+The archived file matched its recorded bytes on the authoring host. Windows Git checkout converted line endings. Setting the archived source to -text preserved its SHA across platforms. Subsequent Windows jobs passed.

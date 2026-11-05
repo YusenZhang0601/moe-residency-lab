@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "moe-residency-lab"
+version = "0.1.0"
+description = "Two hardware case studies and offline replay of statistics-based MoE expert residency"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [{name = "TonyRainforest"}]
+
+[tool.setuptools.packages.find]
+include = ["moe_residency*"]

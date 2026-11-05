@@ -1,0 +1,126 @@
+{
+  "CB_4K_Y2": {
+    "requests": 24,
+    "long_output_tokens": 7188,
+    "long_finish_s": [
+      88.0364,
+      95.4689
+    ],
+    "long_stream_gap_max_s": [
+      6.415725199971348,
+      3.3773015001788735
+    ],
+    "long_stream_gap_p95_s": [
+      0.05201549991033971,
+      0.048710200004279613
+    ],
+    "short_first_reason_max_s": 0.5597292000893503,
+    "short_first_text_max_s": 18.938025099923834,
+    "short_queue_max_s": 18.218648195266724,
+    "cold_first_reason_s": 30.362363699823618,
+    "cold_elapsed_s": 38.3896,
+    "peak_active": 4,
+    "peak_occupied_slots": 4,
+    "max_effective_rows_window": 7.333333333333333,
+    "samples_active_four": 175,
+    "backfilled_while_both_long_active": 16,
+    "wall_s": 96.625,
+    "output_tokens": 7763,
+    "min_observed_free_gib": 12.00949478149414,
+    "rows_without_engine_match": 0,
+    "yields": [
+      {
+        "at": 4096,
+        "total": 36075,
+        "slot": 3,
+        "line": "strata batch: the prompt read gives way at 4096 of 36075 tokens; slot 3 holds it (copied in 179.8 ms)"
+      },
+      {
+        "at": 12288,
+        "total": 36075,
+        "slot": 3,
+        "line": "strata batch: the prompt read gives way at 12288 of 36075 tokens; slot 3 holds it (copied in 98.5 ms)"
+      }
+    ],
+    "yield_rejections": [],
+    "aux_no_thinking_count": 12,
+    "aux_queue_max_s": 18.218648195266724,
+    "aux_first_output_max_s": 18.938025099923834,
+    "aux_output_tokens": 108,
+    "aux_arrivals_after_cold_start": 9,
+    "load_summary": {
+      "requests": 24,
+      "errors": 0,
+      "telemetry_errors": [],
+      "max_client_inference": 4,
+      "short_canary_passes": 17,
+      "short_canary_total": 17
+    }
+  },
+  "CB_4K_Y64": {
+    "requests": 24,
+    "long_output_tokens": 7188,
+    "long_finish_s": [
+      90.8146,
+      97.0398
+    ],
+    "long_stream_gap_max_s": [
+      3.2242721000220627,
+      3.2412147999275476
+    ],
+    "long_stream_gap_p95_s": [
+      0.052955899853259325,
+      0.04932849993929267
+    ],
+    "short_first_reason_max_s": 0.5748207001015544,
+    "short_first_text_max_s": 8.159165799850598,
+    "short_queue_max_s": 7.504705429077148,
+    "cold_first_reason_s": 30.751450600102544,
+    "cold_elapsed_s": 37.9233,
+    "peak_active": 4,
+    "peak_occupied_slots": 4,
+    "max_effective_rows_window": 7.285714285714286,
+    "samples_active_four": 170,
+    "backfilled_while_both_long_active": 16,
+    "wall_s": 98.20299999997951,
+    "output_tokens": 7763,
+    "min_observed_free_gib": 12.00558853149414,
+    "rows_without_engine_match": 0,
+    "yields": [
+      {
+        "at": 8192,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 8192 of 36075 tokens; slot 2 holds it (copied in 151.5 ms)"
+      },
+      {
+        "at": 16384,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 16384 of 36075 tokens; slot 2 holds it (copied in 145.2 ms)"
+      },
+      {
+        "at": 24576,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 24576 of 36075 tokens; slot 2 holds it (copied in 232.2 ms)"
+      }
+    ],
+    "yield_rejections": [
+      "strata batch: BYIELD 2 not taken at 32768 of 36075"
+    ],
+    "aux_no_thinking_count": 12,
+    "aux_queue_max_s": 7.504705429077148,
+    "aux_first_output_max_s": 8.159165799850598,
+    "aux_output_tokens": 108,
+    "aux_arrivals_after_cold_start": 10,
+    "load_summary": {
+      "requests": 24,
+      "errors": 0,
+      "telemetry_errors": [],
+      "max_client_inference": 4,
+      "short_canary_passes": 17,
+      "short_canary_total": 17
+    }
+  }
+}

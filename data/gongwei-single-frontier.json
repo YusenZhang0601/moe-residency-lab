@@ -1,0 +1,367 @@
+{
+  "stage": "completed",
+  "jobs": [
+    {
+      "arm": "confirm-grow",
+      "name": "confirm-grow-b1",
+      "block": 1,
+      "status": "completed",
+      "reused_completed_measurement": true,
+      "cold_wall_seconds": 178.3814287185669,
+      "cold_first_output_seconds": 156.5635712146759,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 156227 ms (1657.6 tok/s), 1024 generated in 21869 ms (46.8 tok/s), drafts accepted 483 of 687, 6 checkpoints",
+      "minimum_available_ram_gib": 6.375518798828125,
+      "minimum_gpu_free_mib": 1383.43359375,
+      "warm_self": null,
+      "restored_self": null,
+      "conditioning": "original four tiers and serially served overlapping arrivals before near full"
+    },
+    {
+      "arm": "confirm-stream64",
+      "name": "confirm-stream64-b1",
+      "block": 1,
+      "status": "completed",
+      "reused_completed_measurement": true,
+      "cold_wall_seconds": 183.67948055267334,
+      "cold_first_output_seconds": 165.96872639656067,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 165604 ms (1563.8 tok/s), 1024 generated in 17792 ms (57.6 tok/s), drafts accepted 455 of 630, 6 checkpoints",
+      "minimum_available_ram_gib": 3.00836181640625,
+      "minimum_gpu_free_mib": 1375.52734375,
+      "warm_self": null,
+      "restored_self": null,
+      "conditioning": "original four tiers and serially served overlapping arrivals before near full"
+    },
+    {
+      "arm": "confirm-grow",
+      "name": "confirm-grow-b2",
+      "block": 2,
+      "status": "completed",
+      "reused_completed_measurement": true,
+      "cold_wall_seconds": 176.39391708374023,
+      "cold_first_output_seconds": 156.38738775253296,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 156037 ms (1659.7 tok/s), 1024 generated in 20070 ms (51.0 tok/s), drafts accepted 427 of 634, 6 checkpoints",
+      "minimum_available_ram_gib": 6.331417083740234,
+      "minimum_gpu_free_mib": 1379.33984375,
+      "warm_self": null,
+      "restored_self": null,
+      "conditioning": "original four tiers and serially served overlapping arrivals before near full"
+    },
+    {
+      "arm": "confirm-stream64",
+      "name": "confirm-stream64-b2",
+      "block": 2,
+      "status": "completed",
+      "reused_completed_measurement": true,
+      "cold_wall_seconds": 177.54845666885376,
+      "cold_first_output_seconds": 158.7248136997223,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 158374 ms (1635.2 tok/s), 1024 generated in 18903 ms (54.2 tok/s), drafts accepted 461 of 715, 6 checkpoints",
+      "minimum_available_ram_gib": 3.210468292236328,
+      "minimum_gpu_free_mib": 1365.21484375,
+      "warm_self": null,
+      "restored_self": null,
+      "conditioning": "original four tiers and serially served overlapping arrivals before near full"
+    },
+    {
+      "arm": "confirm-stream64",
+      "name": "confirm-stream64-b3",
+      "block": 3,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 171.5998125076294,
+      "cold_first_output_seconds": 154.53016114234924,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 154140 ms (1680.1 tok/s), 1024 generated in 17179 ms (59.6 tok/s), drafts accepted 458 of 654, 6 checkpoints",
+      "minimum_available_ram_gib": 3.1435585021972656,
+      "minimum_gpu_free_mib": 1354.62109375,
+      "warm_self": {
+        "seconds": 16.973369121551514,
+        "first_content_seconds": 0.4923670291900635,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 1024,
+          "total_tokens": 261040,
+          "prompt_tokens_details": {
+            "cached_tokens": 259991
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 1.5432374477386475,
+        "first_content_seconds": 1.3468098640441895,
+        "usage": {
+          "prompt_tokens": 261071,
+          "completion_tokens": 8,
+          "total_tokens": 261079,
+          "prompt_tokens_details": {
+            "cached_tokens": 261039
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    },
+    {
+      "arm": "confirm-grow",
+      "name": "confirm-grow-b3",
+      "block": 3,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 171.41576766967773,
+      "cold_first_output_seconds": 153.02171921730042,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 152619 ms (1696.8 tok/s), 1024 generated in 18508 ms (55.3 tok/s), drafts accepted 487 of 677, 6 checkpoints",
+      "minimum_available_ram_gib": 5.899799346923828,
+      "minimum_gpu_free_mib": 1367.24609375,
+      "warm_self": {
+        "seconds": 25.878477573394775,
+        "first_content_seconds": 3.733774185180664,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 1024,
+          "total_tokens": 261040,
+          "prompt_tokens_details": {
+            "cached_tokens": 258960
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 1.263441801071167,
+        "first_content_seconds": 1.0915462970733643,
+        "usage": {
+          "prompt_tokens": 261071,
+          "completion_tokens": 8,
+          "total_tokens": 261079,
+          "prompt_tokens_details": {
+            "cached_tokens": 261040
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    },
+    {
+      "arm": "confirm-grow",
+      "name": "confirm-grow-b4",
+      "block": 4,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 171.62279772758484,
+      "cold_first_output_seconds": 153.02659463882446,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 152669 ms (1696.3 tok/s), 1024 generated in 18706 ms (54.7 tok/s), drafts accepted 495 of 659, 6 checkpoints",
+      "minimum_available_ram_gib": 5.937442779541016,
+      "minimum_gpu_free_mib": 1386.37109375,
+      "warm_self": {
+        "seconds": 3.9167542457580566,
+        "first_content_seconds": 3.8066515922546387,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 5,
+          "total_tokens": 260021,
+          "prompt_tokens_details": {
+            "cached_tokens": 258960
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 1.2568824291229248,
+        "first_content_seconds": 1.053288221359253,
+        "usage": {
+          "prompt_tokens": 260051,
+          "completion_tokens": 8,
+          "total_tokens": 260059,
+          "prompt_tokens_details": {
+            "cached_tokens": 260020
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    },
+    {
+      "arm": "confirm-stream64",
+      "name": "confirm-stream64-b4",
+      "block": 4,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 173.95632147789001,
+      "cold_first_output_seconds": 155.26078867912292,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 154899 ms (1671.8 tok/s), 1024 generated in 18807 ms (54.4 tok/s), drafts accepted 448 of 670, 6 checkpoints",
+      "minimum_available_ram_gib": 3.2579383850097656,
+      "minimum_gpu_free_mib": 1354.74609375,
+      "warm_self": {
+        "seconds": 17.61153745651245,
+        "first_content_seconds": 0.5054852962493896,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 1024,
+          "total_tokens": 261040,
+          "prompt_tokens_details": {
+            "cached_tokens": 259991
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 160.48426413536072,
+        "first_content_seconds": 160.35428500175476,
+        "usage": {
+          "prompt_tokens": 261071,
+          "completion_tokens": 8,
+          "total_tokens": 261079,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    },
+    {
+      "arm": "confirm-stream64",
+      "name": "confirm-stream64-b5",
+      "block": 5,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 175.66437935829163,
+      "cold_first_output_seconds": 155.33722186088562,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 154936 ms (1671.4 tok/s), 1024 generated in 20439 ms (50.1 tok/s), drafts accepted 497 of 769, 6 checkpoints",
+      "minimum_available_ram_gib": 3.2380218505859375,
+      "minimum_gpu_free_mib": 1368.21484375,
+      "warm_self": {
+        "seconds": 18.403815031051636,
+        "first_content_seconds": 0.5041427612304688,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 1024,
+          "total_tokens": 261040,
+          "prompt_tokens_details": {
+            "cached_tokens": 259991
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 1.520343542098999,
+        "first_content_seconds": 1.3238122463226318,
+        "usage": {
+          "prompt_tokens": 261071,
+          "completion_tokens": 8,
+          "total_tokens": 261079,
+          "prompt_tokens_details": {
+            "cached_tokens": 261040
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    },
+    {
+      "arm": "confirm-grow",
+      "name": "confirm-grow-b5",
+      "block": 5,
+      "status": "completed",
+      "reused_completed_measurement": false,
+      "cold_wall_seconds": 172.8947355747223,
+      "cold_first_output_seconds": 153.21022868156433,
+      "cold_usage": {
+        "prompt_tokens": 258967,
+        "completion_tokens": 1024,
+        "total_tokens": 259991,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "cold_engine_line": "strata serve: prompt 258967 tokens = 0 reused + 258967 read in 152872 ms (1694.0 tok/s), 1024 generated in 19784 ms (51.8 tok/s), drafts accepted 416 of 643, 6 checkpoints",
+      "minimum_available_ram_gib": 6.533546447753906,
+      "minimum_gpu_free_mib": 1385.21484375,
+      "warm_self": {
+        "seconds": 19.198228120803833,
+        "first_content_seconds": 0.6045980453491211,
+        "usage": {
+          "prompt_tokens": 260016,
+          "completion_tokens": 1024,
+          "total_tokens": 261040,
+          "prompt_tokens_details": {
+            "cached_tokens": 259990
+          }
+        }
+      },
+      "restored_self": {
+        "seconds": 1.4061813354492188,
+        "first_content_seconds": 1.2352972030639648,
+        "usage": {
+          "prompt_tokens": 261071,
+          "completion_tokens": 8,
+          "total_tokens": 261079,
+          "prompt_tokens_details": {
+            "cached_tokens": 261039
+          }
+        }
+      },
+      "conditioning": "four tiers, short cold/self pair, near full and A/B/A"
+    }
+  ]
+}

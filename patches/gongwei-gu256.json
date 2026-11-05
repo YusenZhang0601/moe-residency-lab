@@ -1,0 +1,9 @@
+{
+  "base_commit": "46c152a1310f77cd2f0ce2c7cd213962df14fe83",
+  "file": "src/kernels/cuda/iq_kernels.cu",
+  "base_lf_sha256": "719f2eee24f93733778239bf7727db7a0e01b51d2841f05fb86120a7396ac8c5",
+  "patched_lf_sha256": "59c083553a77b1ee2d0bc3b8d6e41d19353da56e935c9bdf55c6d6cec6ac9e97",
+  "generation": "Replayed the preserved local transformation against the pinned upstream source.",
+  "validation": "Patch application checked locally. Historical GPU oracle is described in the workstation case. No GPU build in this release.",
+  "opt_in": "STRATA_GU_SWIGLU_2BIT_256=1"
+}

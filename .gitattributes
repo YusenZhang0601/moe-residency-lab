@@ -1,0 +1,4 @@
+# Unified diff context uses a single space on otherwise blank lines.
+*.patch -text -whitespace
+# Preserve the recorded deployment source hash on Windows checkouts.
+reference/routing_counter_20261104.py -text

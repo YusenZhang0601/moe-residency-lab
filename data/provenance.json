@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "counter_source": {
+    "file": "reference/routing_counter_20261104.py",
+    "sha256": "b2ae8d7c5df172d264bf537d5e0579406512f41c2480602853b9c19b86e323bf",
+    "kind": "historical deployment source, preserved byte-for-byte",
+    "date": "2026-11-04",
+    "runtime_validation": "Historical Windows deployment receipt. Live named-pipe acquisition is not revalidated by this release."
+  },
+  "publication": "Historical measurements, not a current service status report.",
+  "measurements": [
+    {
+      "file": "data/a6000-budget-B1-summary.json",
+      "source_sha256": "e6b04974118e24f3e1cb25ac41004e611cc0f4707dbed3e910ec0a477d0e208f",
+      "source_record": "budget-B1-summary.json",
+      "source_date": "2026-11-04",
+      "transformation": "Original aggregate measurements copied without editing. No prompts, addresses or keys."
+    },
+    {
+      "file": "data/a6000-continuous-CB3-summary.json",
+      "source_sha256": "da9c7449b041e05428b30eb3aeb4f041e0203f0914b1616f03823c3e7363576b",
+      "source_record": "continuous-CB3-summary.json",
+      "source_date": "2026-11-04",
+      "transformation": "Original aggregate measurements copied without editing. No prompts, addresses or keys."
+    },
+    {
+      "file": "data/a6000-continuous-CB4-summary.json",
+      "source_sha256": "d83ed1c6806471fb34a91bddc6be2dbd43f0b19aa6ebaad3cdbbabe2bce62b10",
+      "source_record": "continuous-CB4-summary.json",
+      "source_date": "2026-11-04",
+      "transformation": "Original aggregate measurements copied without editing. No prompts, addresses or keys."
+    },
+    {
+      "file": "data/a6000-accounting-proof.json",
+      "source_sha256": "057463326889f25e210dd64ff4fb10abf4fde2195a264a1beaf5b9cf013217c0",
+      "source_record": "accounting-A2-proof.json",
+      "source_date": "2026-11-04",
+      "transformation": "Removed opaque request identifiers; retained native DONE fields and numerical proofs."
+    },
+    {
+      "file": "data/gongwei-single-frontier.json",
+      "source_sha256": "cd312ff61424636845d2059768ccca6a87d88c6c7f70e2b2a26ef1ce40919e72",
+      "source_record": "single-frontier-summary.json",
+      "source_date": "2026-11-01",
+      "transformation": "Allowlisted numerical samples, native timing lines and conditioning notes; removed paths, hashes of private inputs and controller metadata."
+    }
+  ]
+}

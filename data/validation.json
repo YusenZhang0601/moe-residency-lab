@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-05",
+  "host": "macOS arm64",
+  "python": "3.14.6",
+  "local_checks": {
+    "public_python_tests": {
+      "run": 19,
+      "failures": 0,
+      "errors": 0
+    },
+    "accepted_prefix_component": {
+      "cases": 440,
+      "old_invalid_prefixes": 273
+    },
+    "measurement_recalculation": "passed",
+    "GU256_patch_application": {
+      "base": "46c152a1310f77cd2f0ce2c7cd213962df14fe83",
+      "result": "passed"
+    },
+    "upstream": {
+      "base": "9f7d977d220e9fdf2ec53cf2620cdadac1cfb24e",
+      "submitted_commit": "82ffb65680baae7b13ab15ccb431d77834fb0eea",
+      "new_regressions_on_unmodified_base": {
+        "run": 4,
+        "failures": 3,
+        "passed": 1
+      },
+      "fixed_accounting_suite": {
+        "run": 14,
+        "failures": 0,
+        "seconds": 10.783
+      },
+      "fixed_parallel_and_accounting": {
+        "run": 62,
+        "failures": 0,
+        "seconds": 59.38
+      },
+      "combined_with_pr5307": {
+        "run": 72,
+        "failures": 0,
+        "seconds": 65.026,
+        "base": "08519d46405ec720cda411f08af556bee54c9df0"
+      }
+    }
+  },
+  "first_attempt_failures": [
+    {
+      "check": "initial regression setup",
+      "cause": "missing regex/Jinja2, resolved in a project-local environment"
+    },
+    {
+      "check": "first PR5307 patch application",
+      "cause": "textual finalizer hunk overlap; first test attempt then lacked the module; reapplied and reran successfully"
+    },
+    {
+      "check": "default Mac clang++ component build",
+      "cause": "standard C++ headers unavailable on default lookup; passed with explicit installed SDK include/sysroot"
+    },
+    {
+      "check": "First public Windows CI, numerical verification",
+      "cause": "Git autocrlf converted the byte-preserved historical source and changed its SHA. Set the archive and patch files to -text in .gitattributes before rerunning all platforms.",
+      "original_run_id": 42052385228,
+      "preserved_excerpt": "data/windows-checkout-correction.txt"
+    }
+  ],
+  "not_executed": [
+    "Production-host requests or configuration changes",
+    "New GPU benchmarks",
+    "CUDA compilation of historical GU256 patch",
+    "Online Windows named-pipe acquisition"
+  ],
+  "public_data_policy": "Allowlisted historical aggregates and native numeric lines; raw user prompts, credentials, runtime model profiles, host addresses and production configs remain private.",
+  "publication_history_correction": {
+    "reason": "The initial checker embedded four host addresses as exclusion patterns. It was changed to a generic address regex. The user authorized a clean initial-history rebuild.",
+    "effect": "Current public source and initial history exclude those address literals. Prior GitHub object retention is checked separately; this record makes no claim about cache deletion."
+  }
+}

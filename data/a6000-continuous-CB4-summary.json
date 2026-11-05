@@ -1,0 +1,150 @@
+{
+  "N1_AUTO_8K": {
+    "requests": 24,
+    "long_output_tokens": 7188,
+    "long_finish_s": [
+      76.5866,
+      85.5828
+    ],
+    "long_stream_gap_max_s": [
+      3.9366307000163943,
+      3.936714000068605
+    ],
+    "long_stream_gap_p95_s": [
+      0.050937100080773234,
+      0.04910019994713366
+    ],
+    "short_first_reason_max_s": 0.7818185000214726,
+    "short_first_text_max_s": 10.526102799922228,
+    "short_queue_max_s": 9.770360708236694,
+    "cold_first_reason_s": 22.875513899838552,
+    "cold_elapsed_s": 26.0536,
+    "peak_active": 4,
+    "peak_occupied_slots": 4,
+    "max_effective_rows_window": 7.285714285714286,
+    "samples_active_four": 142,
+    "backfilled_while_both_long_active": 16,
+    "wall_s": 86.75,
+    "output_tokens": 7611,
+    "min_observed_free_gib": 12.01926040649414,
+    "rows_without_engine_match": 0,
+    "yields": [
+      {
+        "at": 16384,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 16384 of 36075 tokens; slot 2 holds it (copied in 200.6 ms)"
+      }
+    ],
+    "yield_rejections": [
+      "strata batch: BYIELD 2 not taken at 32768 of 36075"
+    ],
+    "aux_no_thinking_count": 12,
+    "aux_queue_max_s": 9.770360708236694,
+    "aux_first_output_max_s": 10.526102799922228,
+    "aux_output_tokens": 108,
+    "aux_arrivals_after_cold_start": 10,
+    "load_summary": {
+      "requests": 24,
+      "errors": 0,
+      "telemetry_errors": [],
+      "max_client_inference": 4,
+      "short_canary_passes": 17,
+      "short_canary_total": 17
+    }
+  },
+  "N1_AUTO_2K": {
+    "requests": 24,
+    "long_output_tokens": 7188,
+    "long_finish_s": [
+      108.7154,
+      120.9472
+    ],
+    "long_stream_gap_max_s": [
+      5.677670000120997,
+      7.526684599928558
+    ],
+    "long_stream_gap_p95_s": [
+      0.053339300211519,
+      0.05027919984422624
+    ],
+    "short_first_reason_max_s": 0.5233348000328988,
+    "short_first_text_max_s": 3.9893861000891775,
+    "short_queue_max_s": 3.75710391998291,
+    "cold_first_reason_s": 57.39380869991146,
+    "cold_elapsed_s": 63.5742,
+    "peak_active": 4,
+    "peak_occupied_slots": 4,
+    "max_effective_rows_window": 6.888888888888889,
+    "samples_active_four": 281,
+    "backfilled_while_both_long_active": 16,
+    "wall_s": 122.09400000004098,
+    "output_tokens": 7828,
+    "min_observed_free_gib": 11.99972915649414,
+    "rows_without_engine_match": 0,
+    "yields": [
+      {
+        "at": 4096,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 4096 of 36075 tokens; slot 2 holds it (copied in 148.3 ms)"
+      },
+      {
+        "at": 8192,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 8192 of 36075 tokens; slot 2 holds it (copied in 99.5 ms)"
+      },
+      {
+        "at": 12288,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 12288 of 36075 tokens; slot 2 holds it (copied in 135.3 ms)"
+      },
+      {
+        "at": 16384,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 16384 of 36075 tokens; slot 2 holds it (copied in 181.0 ms)"
+      },
+      {
+        "at": 20480,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 20480 of 36075 tokens; slot 2 holds it (copied in 234.1 ms)"
+      },
+      {
+        "at": 24576,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 24576 of 36075 tokens; slot 2 holds it (copied in 267.9 ms)"
+      },
+      {
+        "at": 28672,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 28672 of 36075 tokens; slot 2 holds it (copied in 314.3 ms)"
+      },
+      {
+        "at": 32768,
+        "total": 36075,
+        "slot": 2,
+        "line": "strata batch: the prompt read gives way at 32768 of 36075 tokens; slot 2 holds it (copied in 358.0 ms)"
+      }
+    ],
+    "yield_rejections": [],
+    "aux_no_thinking_count": 12,
+    "aux_queue_max_s": 3.75710391998291,
+    "aux_first_output_max_s": 3.9893861000891775,
+    "aux_output_tokens": 108,
+    "aux_arrivals_after_cold_start": 9,
+    "load_summary": {
+      "requests": 24,
+      "errors": 0,
+      "telemetry_errors": [],
+      "max_client_inference": 4,
+      "short_canary_passes": 17,
+      "short_canary_total": 17
+    }
+  }
+}
