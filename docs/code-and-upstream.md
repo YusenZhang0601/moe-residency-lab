@@ -9,6 +9,15 @@
 | GU256 patch | 回放保存的本地转换，基于上游 `46c152a1` | 对固定源文件执行 patch application check；CUDA 编译与 GPU 数值检查沿用历史范围 |
 | 提交前缀 helper | 保存的实际 C++ helper 与组件测试 | 本次 Mac CPU 执行 440 个预算/EOS/前缀案例 |
 | BYIELD 统计 patch | 从历史修复移植至上游 `9f7d977d` | 当前上游模拟引擎回归与相邻 PR 兼容检查 |
+| `v0.2` 物理账本验证模块（`moe_residency/ledger_v2.py`） | 去截距解码斜率、CUDA P2 热节流/显存门禁、稀疏 KV 交叉点求解与 `v0.2` 脱敏 JSON 复算 | `tests/test_ledger_v2.py` + `examples/verify_results.py` 全量校验 |
+
+## v0.2 个人版发布与后续上游贡献计划
+
+2026 年 11 月完成的 6 项默认关闭引擎/宿主优化（`RFC-K1`、`RFC-S1-L2`、`RFC-K3 v2`、`RFC-S3A`、`RFC-S3B`、`RFC-S2A-1/2`，严格剔除证否的 `RFC-S1-L1`）已公开合流至 [`YusenZhang0601/Strata`](https://github.com/YusenZhang0601/Strata)：
+
+- **发布标签**：[`personal-0.1.56-p2`](https://github.com/YusenZhang0601/Strata/tree/personal-0.1.56-p2)（附注标签对象 `15d32af0a9fa503258d7b63ebbe5aa84ed2fdd8f` → 严格解引用至编译提交 `a1c2c904139d5c6a028750141d7a75f35253b76a`）；
+- **稳定分支**：[`personal/stable`](https://github.com/YusenZhang0601/Strata/tree/personal/stable)（`0d5725c9657d625b85c4457f4723b9461c7f2232`，在 `a1c2c904` 之上仅含纯 `personal/` 文档更新，零源码漂移）；
+- **基线与上游移植透明说明**：本仓 `data/2026-11-22_a6000-v2/` 中全部 A6000 实测数据均采自 Strata `0.1.56` 基线（`personal-0.1.56-p2`）。向官方 `Niko1221/Strata` 最新 `main` 分支的独立拆包 PR 与对应版本的编译验证按单主题分别推进，不拿旧基线数据冒充新基线测试。
 
 离线工具有两项明确适配。密度比较使用 Fraction 保留大整数精度，层内索引使用取模以处理非 2 的幂几何。历史计数器保持原字节供阅读，原先以 512 专家为主要部署条件。
 

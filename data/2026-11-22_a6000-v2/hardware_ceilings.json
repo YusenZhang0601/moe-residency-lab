@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-22",
+  "platform": {
+    "gpu": "NVIDIA RTX A6000 48 GB (Ampere sm_86, WDDM driver 597.30, 300 W TDP)",
+    "cpu": "2x AMD EPYC 7542 (64C/128T total, 2 NUMA nodes, 256 GiB DDR4-3200)",
+    "interconnect": "PCIe Gen3 x16",
+    "model": "Qwen3.8-Flash-Next SC117 IQ3_XXS (176B total / ~6B active, 48 layers = 36 GDN + 12 QSA, 512 experts top-10, 262K context, INT8 KV)",
+    "engine_baseline": "Strata 0.1.56 (personal-0.1.56-p1, 31 GiB VRAM expert cache / 19,379 slots, --kv-resident 32768, --batch 4 --batch-mtp)"
+  },
+  "measured_physical_ceilings": {
+    "vram_read_gbs": 713.0,
+    "vram_nominal_gbs": 768.1,
+    "fp32_tflops": 38.7,
+    "pcie_gen3_x16_h2d_pinned_gbs": 12.57,
+    "pcie_gen3_x16_d2h_pinned_gbs": 13.21,
+    "pcie_gen3_x16_wddm_bidir_sum_gbs": 12.84,
+    "ddr4_numa0_30t_gbs": 120.0,
+    "ddr4_numa0_1t_gbs": 19.8,
+    "cuda_p2_mem_mhz": 7601,
+    "cuda_idle_mem_mhz": 405,
+    "thermal_throttle_threshold_c": 87,
+    "power_cap_w": 300
+  },
+  "phase1_five_scenarios_baseline": {
+    "decode_linear_law": {
+      "fixed_dense_intercept_ms": 6.64,
+      "marginal_slope_1l_to_4l_baseline_ms_per_row": 5.9,
+      "vram_hit_expert_4l_ms_per_row": 0.98,
+      "vram_hit_expert_byte_floor_ms_per_row": [
+        1.05,
+        1.33
+      ]
+    },
+    "S1_solo_100k_decode": {
+      "avg_rows": 3.45,
+      "win_ms": 19.6,
+      "effective_vram_bw_pct_of_713": 47.5,
+      "qsa_pure_attn_ms": [
+        0.32,
+        0.61
+      ],
+      "numa0_avail_min_gib": 22.8
+    },
+    "S2_four_lane_100k_decode": {
+      "avg_rows": 5.98,
+      "win_ms": 41.92,
+      "qsa_sel_res_attn_seg5_9_ms": 9.47,
+      "qsa_degradation_vs_solo_x": 2.48,
+      "batch_side_mixer_exposed_ms": 3.34,
+      "bt_commit_ms": 1.82,
+      "bt_emit_ms": 2.9,
+      "bt_emit_host_printf_ms": 0.11,
+      "numa0_avail_min_gib": 12.9
+    },
+    "S3_small_incremental_prefill_100k": {
+      "kv_stage_full_prefix_ms": [
+        98,
+        99
+      ],
+      "host_grouping_ms": [
+        95,
+        115
+      ],
+      "dequant_ms": [
+        190,
+        263
+      ],
+      "gemm_ms": [
+        184,
+        384
+      ],
+      "wait_copy_ms": [
+        3,
+        5
+      ],
+      "lend_refill_slots": [
+        391,
+        473
+      ],
+      "lend_refill_ms": [
+        56,
+        68
+      ]
+    },
+    "S4_cold_prefill_100k": {
+      "wall_s": 39.7,
+      "throughput_tok_s": 2425.0,
+      "fp32_utilization_pct": 75.0,
+      "power_cap_bound": true
+    },
+    "S5_park_restore_100k": {
+      "cold_park_total_ms": [
+        1054,
+        1128
+      ],
+      "cold_park_resize_zero_fill_ms": [
+        682,
+        703
+      ],
+      "cold_park_resize_share_pct": [
+        74,
+        81
+      ],
+      "numa1_spill_session_index": 14,
+      "numa1_spill_resize_ms": [
+        1683,
+        1694
+      ],
+      "numa1_spill_cold_park_s": [
+        2.1,
+        2.15
+      ],
+      "numa1_spill_restore_penalty_ms": [
+        120,
+        160
+      ]
+    },
+    "E6_host_outside_engine_ms": {
+      "ctx_1k_ms": 32.28,
+      "ctx_100k_ms": 88.18,
+      "ctx_167k_ms": 135.06,
+      "ctx_167k_breakdown": {
+        "json_parse_ms": 2.52,
+        "mark_think_ms": 1.81,
+        "jinja_render_ms": 1.28,
+        "unmark_think_ms": 9.02,
+        "tokenize_warm_ms": 2.9,
+        "ascii_csv_join_ms": 45.75,
+        "pipe_and_cpp_getline_residual_ms": 40.4
+      }
+    }
+  }
+}

@@ -5,8 +5,13 @@ import json
 from pathlib import Path
 import re
 import statistics
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from moe_residency.ledger_v2 import classify_arm_validity, recompute_v2_rc_d1_summary
 
 
 def load(name):
@@ -62,6 +67,25 @@ def main():
         assert abs(sum(leg["prompt_ms"] for leg in legs) - row["api_prompt_ms"]) < 0.01
         assert row["native_prompt_ms"] == row["api_prompt_ms"]
         print(row["case"], "original cache / fresh / prompt ms", row["external_reused"], row["fresh_input"], row["api_prompt_ms"])
+
+    # v0.2 A6000 first-principles & personal-0.1.56-p2 checks
+    v2_exam = load("2026-11-22_a6000-v2/v2_rc_grand_exam.json")
+    v2_abl = load("2026-11-22_a6000-v2/phase2_rfc_ablations.json")
+    d1_sum = recompute_v2_rc_d1_summary(v2_exam)
+    assert d1_sum["off_win_ms"] == 41.915 and d1_sum["on_win_ms"] == 34.315
+    assert d1_sum["win_reduction_pct"] == 18.1 and d1_sum["slope_reduction_pct"] == 21.0
+    assert d1_sum["emit_reduction_pct"] == 33.7
+    assert d1_sum["off_wall_s"] == 20.55 and d1_sum["on_wall_s"] == 11.92 and d1_sum["wall_speedup_x"] == 1.72
+    for arm_name, row in v2_exam["D1_four_lane_100k_abab"].items():
+        ok, reasons = classify_arm_validity(row)
+        assert ok, (arm_name, reasons)
+    assert v2_abl["rfcs"]["RFC-S1-L1"]["excluded_from_release"] is True
+    assert min(v2_exam["D6_vram_floor_and_redlines"]["all_6_on_mem_free_min_mib"]) >= 4700
+    print(
+        "v0.2 D1 pure decode / end-to-end:",
+        f"{d1_sum['off_win_ms']}->{d1_sum['on_win_ms']} ms (-{d1_sum['win_reduction_pct']}%)",
+        f"/ {d1_sum['off_wall_s']}->{d1_sum['on_wall_s']} s ({d1_sum['wall_speedup_x']}x)",
+    )
     print("All published numerical checks passed.")
 
 

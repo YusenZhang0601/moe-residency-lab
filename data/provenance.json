@@ -43,6 +43,34 @@
       "source_record": "single-frontier-summary.json",
       "source_date": "2026-11-01",
       "transformation": "Allowlisted numerical samples, native timing lines and conditioning notes; removed paths, hashes of private inputs and controller metadata."
+    },
+    {
+      "file": "data/2026-11-22_a6000-v2/hardware_ceilings.json",
+      "source_sha256": "75bd106c153a3887d8b17510e70f3bee858872fd91449120157739c502bcefd4",
+      "source_record": "Phase 1 five-scenario hardware ceiling and utilization ledger (44 exclusive A6000 arms)",
+      "source_date": "2026-11-21",
+      "transformation": "Aggregated hardware ceilings and five-scenario utilization metrics; stripped hostnames, local paths, PIDs and prompt text."
+    },
+    {
+      "file": "data/2026-11-22_a6000-v2/phase2_rfc_ablations.json",
+      "source_sha256": "34cf771420d1e0996b9a902e7afa7cf9a136b6347aa10bd7b06786c94561b816",
+      "source_record": "Phase 2 isolated ABAB ablations for 7 RFCs (6 merged + 1 falsified RFC-S1-L1)",
+      "source_date": "2026-11-22",
+      "transformation": "Extracted aligned ABAB timing, telemetry, parity and K3-A clean crossover metrics; stripped local paths, PIDs and content previews."
+    },
+    {
+      "file": "data/2026-11-22_a6000-v2/v2_rc_grand_exam.json",
+      "source_sha256": "75146d71fe0fb3de46797f30d06af20a97a68dd7b1a454242fef33c98650e8b2",
+      "source_record": "Full-stack integrated D1-D6 evaluation of personal-0.1.56-p2 (commit a1c2c904)",
+      "source_date": "2026-11-22",
+      "transformation": "Extracted D1-D6 aggregate metrics, binary SHA-256 receipts and validity counters; stripped local paths, PIDs and raw logs."
+    },
+    {
+      "file": "data/2026-11-22_a6000-v2/falsified_registry.json",
+      "source_sha256": "8c9133728ec6292a526eb5c72064f429efde5ea80b74f2e178e50fd3e9e2cb86",
+      "source_record": "Consolidated falsified-hypothesis registry (Nov 15-22, 2026)",
+      "source_date": "2026-11-22",
+      "transformation": "Structured summary of disproved hypotheses with measured counter-evidence and physical root causes."
     }
   ]
 }

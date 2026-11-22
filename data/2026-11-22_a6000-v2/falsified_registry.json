@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-22",
+  "items": [
+    {
+      "id": "F1",
+      "hypothesis": "Multi-lane concurrency was time-sliced and batching lanes would double throughput",
+      "verdict": "falsified",
+      "date": "2026-11-15",
+      "evidence": "Source audit + 1/2/4-lane scaling proved slots already batch in batch_step; each active row reads ~0.75-0.95 GB of distinct MoE experts (unshareable), yielding win_ms ~= 6.64 + marginal_slope * rows."
+    },
+    {
+      "id": "F2",
+      "hypothesis": "STRATA_HC_PERSIST=1 and deeper hyper-connection prefetch (STRATA_HC_DEEP) reduce decode latency",
+      "verdict": "falsified",
+      "date": "2026-11-16",
+      "evidence": "Engine ABAB win_ms 43.47 vs 43.49 ms (zero net gain), degraded 4-lane burst wall time (14.1-14.3 s vs 10.5-12.4 s), and altered numerical output."
+    },
+    {
+      "id": "F3",
+      "hypothesis": "Solo STRATA_QSA_SPLIT_ATTN=1 removes a 7.07 ms QSA attention bottleneck",
+      "verdict": "falsified",
+      "date": "2026-11-21",
+      "evidence": "Source audit showed batch_rec_ omitted profile stamps 11/12, lumping scores+topk+kv-resolve+attention into attention. Solo pure attention is only 0.32-0.61 ms; split-attn saved 0.07 ms (below noise)."
+    },
+    {
+      "id": "F4",
+      "hypothesis": "STRATA_KV_PREFETCH=1 hides 98-99 ms full-prefix KV staging during incremental prefill",
+      "verdict": "falsified",
+      "date": "2026-11-21",
+      "evidence": "WDDM PCIe Gen3 x16 lacks full-duplex overlap (bidir sum 12.84 GB/s ~= single direction); KV_PREFETCH=1 matched baseline (894 vs 856-932 ms / 1,153 vs 1,150-1,279 ms). Replaced by Selection-First sparse KV (RFC-K3-A)."
+    },
+    {
+      "id": "F5",
+      "hypothesis": "Jinja incremental rendering cache and full Rust HTTP proxy rewrite are needed for 70-140 ms host overhead",
+      "verdict": "falsified",
+      "date": "2026-11-21",
+      "evidence": "167K stage breakdown measured Jinja at 1.28 ms and warm BPE at 2.90 ms; 84% of linear growth was Python ASCII CSV join (45.75 ms) + Pipe/C++ getline_fd O(N^2) (~40.4 ms). RFC-S2A-1+2 cut 167K host time 135.06 -> 62.92 ms (-53.4%), leaving ~10-15 ms in Python (<25 ms rewrite threshold)."
+    },
+    {
+      "id": "F6",
+      "hypothesis": "Cross-layer persistent Megakernel on RTX A6000 (sm_86) breaks the MoE memory bandwidth ceiling",
+      "verdict": "falsified",
+      "date": "2026-11-21",
+      "evidence": "Physical ceiling: RTX A6000 has 6 MB L2 and 8.3 MB aggregate shared memory across 84 SMs, unable to hold multi-gigabyte HBM MoE/dense weights on-chip; cannot eliminate 1 byte of DRAM weight traffic."
+    },
+    {
+      "id": "F7",
+      "hypothesis": "Standalone STRATA_BATCH_COMMIT_ASYNC=1 (RFC-S1-L1) overlaps 1.8 ms commit_bm_ with per-slot MTP drafts",
+      "verdict": "falsified_veto_merge",
+      "date": "2026-11-22",
+      "evidence": "4x100K ABAB: commit dropped 1.54-1.85 -> 0.09-0.12 ms, but emit jumped 2.41-2.92 -> 4.16-4.25 ms and gpu_wait rose +0.54 to +0.75 ms (GDDR6 bus/300W TDP contention + WDDM cs_ tail spill); net slope delta -0.03 ms/row (<0.5%). Vetoed and replaced by RFC-S1-L2 Multi-Slot Batched MTP."
+    }
+  ]
+}

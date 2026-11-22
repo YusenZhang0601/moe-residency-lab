@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-22",
+  "release_tag": "personal-0.1.56-p2",
+  "compiled_commit": "a1c2c904139d5c6a028750141d7a75f35253b76a",
+  "artifacts_sha256": {
+    "strata.exe": "9ca1348a2ea895294b80cf0ee882a50273f31c16c5feaffd903d5c5c502baa17",
+    "strata_kq.dll": "a95954c3a626122c3590b3748c467e268edf752375b344fccaee73657f9b62f8",
+    "qsa_slots_parity.exe": "27a7bf87dca53d424830fe23a7fb761a7285ff85accc800d1e35a01da7c0ac7d",
+    "conversation_cache_test.exe": "9f1aee79d1be8e7b5508b2ec7707d5d74d17072d53a2dff59c47efb526a20daa"
+  },
+  "unit_tests": {
+    "qsa_slots_parity_pre75": "16/16 bitwise PASS (0 declined)",
+    "conversation_cache_test_numa0": "on_node=256 off_node=0 fell_back=0, 4877 checks passed",
+    "test_ipc_delta": "5/5 PASS",
+    "aplus_accept_production_serve": "10/10 PASS"
+  },
+  "D1_four_lane_100k_abab": {
+    "v2rc_off1": {
+      "wall_ms": 21403.3,
+      "decode_only_ms": 5926.2,
+      "non_decode_ms": 15477.1,
+      "windows": 141,
+      "avg_rows": 6.0,
+      "win_ms": 42.03,
+      "gpu_wait_ms": 33.27,
+      "run_ms": 37.23,
+      "cpu_exp_ms": 2.13,
+      "commit_ms": 1.82,
+      "emit_ms": 2.9,
+      "slope_win_adj": 5.898,
+      "slope_run_adj": 5.098,
+      "completion_tokens_per_lane": [
+        150,
+        256,
+        256,
+        256
+      ],
+      "total_completion_tokens": 918,
+      "mtp_pct": 77.4,
+      "mem_free_min_mib": 5769,
+      "thermal_throttle_hits": 0,
+      "power_cap_hits": 77,
+      "cpu_interference_hits": 0,
+      "numa0_avail_min_gib": 16.49,
+      "numa1_avail_min_gib": 112.69
+    },
+    "v2rc_off2": {
+      "wall_ms": 19703.7,
+      "decode_only_ms": 5935.6,
+      "non_decode_ms": 13768.1,
+      "windows": 142,
+      "avg_rows": 5.96,
+      "win_ms": 41.8,
+      "gpu_wait_ms": 32.64,
+      "run_ms": 37.01,
+      "cpu_exp_ms": 2.16,
+      "commit_ms": 1.81,
+      "emit_ms": 2.89,
+      "slope_win_adj": 5.899,
+      "slope_run_adj": 5.096,
+      "completion_tokens_per_lane": [
+        150,
+        256,
+        256,
+        256
+      ],
+      "total_completion_tokens": 918,
+      "mtp_pct": 77.0,
+      "mem_free_min_mib": 5745,
+      "thermal_throttle_hits": 0,
+      "power_cap_hits": 68,
+      "cpu_interference_hits": 0,
+      "numa0_avail_min_gib": 18.43,
+      "numa1_avail_min_gib": 112.7
+    },
+    "v2rc_on1": {
+      "wall_ms": 12219.4,
+      "decode_only_ms": 4914.6,
+      "non_decode_ms": 7304.8,
+      "windows": 142,
+      "avg_rows": 5.94,
+      "win_ms": 34.61,
+      "gpu_wait_ms": 27.32,
+      "run_ms": 30.73,
+      "cpu_exp_ms": 2.08,
+      "commit_ms": 1.84,
+      "emit_ms": 1.96,
+      "slope_win_adj": 4.709,
+      "slope_run_adj": 4.056,
+      "completion_tokens_per_lane": [
+        150,
+        256,
+        256,
+        256
+      ],
+      "total_completion_tokens": 918,
+      "mtp_pct": 75.3,
+      "mem_free_min_mib": 4703,
+      "thermal_throttle_hits": 0,
+      "power_cap_hits": 65,
+      "cpu_interference_hits": 0,
+      "numa0_avail_min_gib": 18.54,
+      "numa1_avail_min_gib": 112.7
+    },
+    "v2rc_on2": {
+      "wall_ms": 11622.5,
+      "decode_only_ms": 4830.8,
+      "non_decode_ms": 6791.7,
+      "windows": 142,
+      "avg_rows": 5.94,
+      "win_ms": 34.02,
+      "gpu_wait_ms": 27.08,
+      "run_ms": 30.24,
+      "cpu_exp_ms": 2.15,
+      "commit_ms": 1.82,
+      "emit_ms": 1.88,
+      "slope_win_adj": 4.609,
+      "slope_run_adj": 3.973,
+      "completion_tokens_per_lane": [
+        150,
+        256,
+        256,
+        256
+      ],
+      "total_completion_tokens": 918,
+      "mtp_pct": 77.8,
+      "mem_free_min_mib": 4723,
+      "thermal_throttle_hits": 0,
+      "power_cap_hits": 66,
+      "cpu_interference_hits": 0,
+      "numa0_avail_min_gib": 18.54,
+      "numa1_avail_min_gib": 112.73
+    }
+  },
+  "D2_solo_100k_no_regression": {
+    "off2": {
+      "avg_rows": 4.12,
+      "win_ms": 22.51,
+      "slope_win_adj": 3.852,
+      "draft_ms": 2.46
+    },
+    "on2": {
+      "avg_rows": 3.64,
+      "win_ms": 20.84,
+      "slope_win_adj": 3.901,
+      "draft_ms": 2.46
+    }
+  },
+  "D3_hot_incremental_prefill_100k": {
+    "t130_pure_k3_155_tok": {
+      "off2_prompt_ms": 941.0,
+      "off2_kv_plus_qsa_ms": 104,
+      "off2_lend_slots": 391,
+      "on2_prompt_ms": 726.6,
+      "on2_kv_plus_qsa_ms": 48,
+      "on2_lend_slots": 0
+    },
+    "t240_combined_248_tok_note": "on2 prompt_ms=818.8 (kv+qa=82, lend=0); off2 included a cold park so pure K3 gain is accounted from t130 and Wave 2 clean ABAB.",
+    "t505_combined_527_tok_note": "on2 seamlessly fell back to K3-B full staging (prompt_ms=1062.1, kv+qa=113, lend=0)."
+  },
+  "D4_park_restore_100k": {
+    "off2_cold_park_ms": [
+      1053.6,
+      1059.1
+    ],
+    "off2_cold_resize_ms": [
+      699.3,
+      702.7
+    ],
+    "off2_restore_ms": 273.3,
+    "on2_cold_park_ms": [
+      180.9,
+      188.8
+    ],
+    "on2_cold_resize_ms": [
+      0.28,
+      0.52
+    ],
+    "on2_restore_ms": 237.7,
+    "final_numa0_avail_after_8_to_10_sessions_gib": {
+      "off2": 5.87,
+      "on2": 8.58
+    }
+  },
+  "D5_host_outside_stacked_ms": {
+    "phase1_baseline": {
+      "1K": 32.28,
+      "100K": 88.18,
+      "167K": 135.06
+    },
+    "v2rc_off2_s2a1_only": {
+      "1K": 20.51,
+      "100K": 70.9,
+      "167K": 101.01
+    },
+    "v2rc_on2_s2a1_plus_s2a2": {
+      "1K": 26.58,
+      "100K": 54.9,
+      "167K": 62.92
+    }
+  },
+  "D6_vram_floor_and_redlines": {
+    "all_6_on_mem_free_min_mib": [
+      4703,
+      4723
+    ],
+    "safety_floor_mib": 2048,
+    "redlines": [
+      "Keep STRATA_BATCH_MTP_ATTN_SLOTS unset (enforces <=32 MiB auto-guard; forcing =1 at window==0/262K adds 387-580 MiB VRAM).",
+      "Keep STRATA_PREFILL_SPARSE_CHECK=0 in steady-state operation (avoids unnecessary CUDA stream syncs).",
+      "Do not enable STRATA_BATCH_COMMIT_ASYNC=1 (RFC-S1-L1 falsified and excluded from personal-0.1.56-p2)."
+    ]
+  }
+}
