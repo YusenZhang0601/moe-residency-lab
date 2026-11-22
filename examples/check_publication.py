@@ -19,6 +19,8 @@ def main():
     for path in files:
         if path == Path(__file__).resolve():
             continue
+        if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".gif", ".pdf", ".webp"}:
+            continue
         text = path.read_text(encoding="utf-8")
         if SENSITIVE.search(text):
             errors.append(f"private-material pattern in {path.relative_to(ROOT)}")

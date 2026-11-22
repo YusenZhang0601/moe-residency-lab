@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>First-Principles Heterogeneous MoE Inference: From a 16 GB RTX 5060 Ti to 1.72x Faster 4x100K on RTX A6000</title>
+  <meta name="description" content="Hardware-ceiling anatomy, CUDA kernel batching, OS page-fault removal, 6 upstream Strata PRs, and the optimizations that backfired when serving a 176B sparse MoE on a single workstation GPU.">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2933;
+      --muted: #52606d;
+      --border: #d9e2ec;
+      --code-bg: #f5f7fa;
+      --accent: #0072b2;
+      --accent-soft: #eff6ff;
+      --warn-bg: #fff7ed;
+      --warn-border: #d55e00;
+      --ok-bg: #ecfdf5;
+      --ok-border: #009e73;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1419;
+        --fg: #e6edf3;
+        --muted: #9fb3c8;
+        --border: #2b3643;
+        --code-bg: #171e26;
+        --accent: #56b4e9;
+        --accent-soft: #132233;
+        --warn-bg: #26180f;
+        --warn-border: #e69f00;
+        --ok-bg: #0f241e;
+        --ok-border: #009e73;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem 1.25rem 4rem;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: 16.5px;
+      line-height: 1.68;
+    }
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 1.95rem;
+      line-height: 1.24;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 1.04rem;
+      margin: 0 0 1rem;
+    }
+    .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+    }
+    h2 {
+      font-size: 1.38rem;
+      margin: 2.4rem 0 0.75rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -0.01em;
+    }
+    h3 {
+      font-size: 1.1rem;
+      margin: 1.6rem 0 0.5rem;
+    }
+    p { margin: 0.85rem 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: var(--code-bg);
+      padding: 0.14em 0.36em;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1.1rem;
+      overflow-x: auto;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    pre code { background: none; padding: 0; }
+    ul, ol { padding-left: 1.4rem; margin: 0.7rem 0; }
+    li { margin: 0.38rem 0; }
+    .callout {
+      border-left: 3.5px solid var(--accent);
+      background: var(--accent-soft);
+      padding: 0.9rem 1.1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 1.25rem 0;
+    }
+    .callout.warn {
+      border-left-color: var(--warn-border);
+      background: var(--warn-bg);
+    }
+    .callout.ok {
+      border-left-color: var(--ok-border);
+      background: var(--ok-bg);
+    }
+    figure {
+      margin: 1.8rem 0;
+      padding: 0;
+    }
+    figure img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+    figcaption {
+      margin-top: 0.55rem;
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      display: block;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--code-bg);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Serving a 176B Sparse MoE on a Single Workstation GPU: From a 16 GB RTX 5060 Ti to 1.72x Faster 4x100K on RTX A6000</h1>
+    <p class="subtitle">First-principles hardware ceilings, CUDA kernel batching, Windows OS page faults, 6 upstream PRs, and why async commit actually made decode slower.</p>
+    <div class="meta">
+      <span>Author: <a href="https://github.com/YusenZhang0601">YusenZhang0601</a></span>
+      <span>Date: November 22, 2026</span>
+      <span>Repo: <a href="https://github.com/YusenZhang0601/moe-residency-lab">moe-residency-lab</a></span>
+      <span>Release: <a href="https://github.com/YusenZhang0601/Strata/tree/personal-0.1.56-p2">Strata personal-0.1.56-p2</a></span>
+    </div>
+  </header>
+
+  <p>Most LLM inference optimization work targets datacenter clusters (vLLM, SGLang, multi-node TensorRT-LLM) or single-stream cold decode on CPU+GPU offload. My workload looks nothing like either: a <strong>personal agent workstation</strong> running a 176B-parameter sparse MoE (<code>Qwen3.8-Flash-Next</code>, <code>IQ3_XXS</code>, ~6B active parameters, 48 layers = 36 GDN + 12 QSA, 512 experts top-10, 262K context, INT8 KV, plus MTP speculative decoding) on a single GPU, spending 90% of its life on 100K&ndash;262K cached contexts, small incremental turns, frequent session parking/restoring, and 2&ndash;4 concurrent sub-agents.</p>
+
+  <p>Over October&ndash;November 2026, I studied this workload across two very different single-GPU tiers&mdash;first on an affordable <strong>16 GiB RTX 5060 Ti + 64 GiB RAM</strong> desktop, then in a full first-principles kernel/runtime overhaul on a <strong>48 GB RTX A6000 (<code>sm_86</code>, WDDM, PCIe Gen3 x16, dual EPYC 7542)</strong>. Zero expert skipping, zero precision reduction, and every optimization gated by matched-sample ABAB benchmarks and bitwise/acceptance tests.</p>
+
+  <div class="callout ok">
+    <strong>Core numbers (strictly separating pure decode from full-stack burst):</strong>
+    <ul>
+      <li><strong>Consumer tier (v0.1, RTX 5060 Ti 16 GiB + 64 GiB RAM, 259K near-full context)</strong>: 176B MoE runs locally at <strong>51.8&ndash;54.4 tok/s</strong> decode, proving that whole-call latency and decode-only tok/s pick <em>opposite</em> memory-residency winners (<code>172.9 s @ 51.8 tok/s</code> vs <code>175.7 s @ 54.4 tok/s</code>).</li>
+      <li><strong>Workstation tier (v0.2, RTX A6000 48 GB, 4x100K concurrent agent burst, matched 918 completion tokens)</strong>: End-to-end wall time dropped <strong>20.55 s &rarr; 11.92 s (-42.0%, 1.72x, 44.8 &rarr; 77.1 tok/s)</strong>.</li>
+      <li><strong>Pure 4x100K decode window (separated from burst)</strong>: <strong>41.92 &rarr; 34.32 ms/win (-18.1%)</strong>, intercept-adjusted slope <strong>5.90 &rarr; 4.66 ms/row (-21.0%)</strong>, pushing effective VRAM bandwidth from ~47.5% to ~55&ndash;58% of the measured 713 GB/s ceiling with <strong>0 MiB</strong> extra VRAM for QSA batching.</li>
+      <li><strong>Non-decode stages that secretly dominated wall time</strong>: 100K cold session park <strong>1,056 &rarr; 185 ms (5.7x)</strong>, hot reuse park <strong>126.5 &rarr; 15.7 ms (8.1x)</strong>, 100K incremental prefill (155 tok) <strong>941 &rarr; 727 ms (-22.8%)</strong>, 167K host-layer overhead <strong>135.1 &rarr; 62.9 ms (-53.4%)</strong>.</li>
+    </ul>
+  </div>
+
+  <figure>
+    <img src="assets/fig1_end_to_end_4x100k.png" alt="4x100K end-to-end burst speedup (1.72x) and separated pure decode window breakdown (-18.1%) on RTX A6000">
+    <figcaption><strong>Figure 1.</strong> Integrated <code>personal-0.1.56-p2</code> (ALL 6 ON) vs <code>0.1.56</code> baseline (ALL OFF) on RTX A6000 across matched 4x100K ABAB runs (identical per-lane output lengths <code>[150, 256, 256, 256] = 918</code> tokens, 0 thermal throttle, 0 CPU interference). I always report end-to-end burst speedup (1.72x) separately from pure decode window speedup (-18.1%).</figcaption>
+  </figure>
+
+  <h2>1. The Two-Tier Insight: Why Consumer 16 GB and Workstation 48 GB Break Differently</h2>
+
+  <p>Before touching CUDA kernels on the A6000, my <a href="https://github.com/YusenZhang0601/moe-residency-lab/blob/main/docs/gongwei.md">v0.1 experiments on an i7-14700F + RTX 5060 Ti 16 GiB + 64 GiB RAM</a> taught a foundational lesson: <strong>heterogeneous MoE serving is a memory-hierarchy co-design problem, not a single-metric decode race</strong>.</p>
+
+  <p>On 16 GiB VRAM with 39.97 GiB of MoE experts living in host RAM, you cannot cache everything on GPU. Comparing two layouts across five 259K-token cold calls:</p>
+  <ul>
+    <li><strong>Full-RAM experts + growing KV (<code>grow</code>)</strong>: median decode <strong>51.8 tok/s</strong>, TTFT <strong>153.2 s</strong>, whole-call wall time <strong>172.9 s</strong>.</li>
+    <li><strong>Complement RAM residency + 64K physical KV (<code>stream64</code>)</strong>: median decode <strong>54.4 tok/s</strong> (+5%), yet TTFT rose to <strong>155.3 s</strong> and whole-call wall time worsened to <strong>175.7 s</strong> due to host KV staging pressure.</li>
+  </ul>
+  <p>On consumer hardware, decode-only tok/s literally chose the wrong architecture for real calls, and static expert pinning had to rank experts by <strong>hits per byte</strong> rather than raw frequency (implemented as a reproducible offline solver in <a href="https://github.com/YusenZhang0601/moe-residency-lab"><code>moe_residency</code></a>). Even a single unguarded snapshot admission or Windows file-mapping working-set spike during startup could silently trigger a full cold reload.</p>
+
+  <p>When I moved up to a <strong>48 GB RTX A6000</strong> (31 GiB VRAM expert cache holding 19,379 of 24,576 experts), the bottleneck flipped completely. Expert VRAM reads in 4-lane decode measured <strong>0.98 ms/row</strong>&mdash;already near the physical byte floor. Yet 4x100K concurrent bursts still took <strong>20.55 seconds</strong>. Why?</p>
+
+  <h2>2. Measure the Hardware Walls First (and Fix the Ruler)</h2>
+
+  <p>Instead of guessing flags, I measured the A6000 workstation's physical ceilings directly and classified every millisecond of latency as a <strong>physical wall</strong>, a <strong>conditional model wall</strong>, or <strong>engineering waste</strong>:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Subsystem</th>
+        <th>Measured Physical Ceiling</th>
+        <th>Implications for Design</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>RTX A6000 VRAM (<code>sm_86</code>, WDDM 597.30)</td>
+        <td class="num"><strong>713.0 GB/s</strong> sustained read (768 nominal)</td>
+        <td>CUDA P2 locks active memory clock at <code>7601 MHz</code> even at 42&deg;C; thermal throttling must be gated via NVML flags, not nominal clock.</td>
+      </tr>
+      <tr>
+        <td>GPU Compute &amp; Power</td>
+        <td class="num"><strong>38.7 TFLOPS</strong> FP32 / <strong>300 W</strong> TDP</td>
+        <td>100K cold prefill (39.7 s, 2,425 tok/s) hits ~75% FP32 + 300 W power cap (physical wall). 4-lane decode also rides the 300 W cap.</td>
+      </tr>
+      <tr>
+        <td>PCIe Gen3 x16 (WDDM)</td>
+        <td class="num"><strong>12.57 GB/s</strong> H2D / <strong>13.21 GB/s</strong> D2H</td>
+        <td>Measured bidirectional sum is <strong>12.84 GB/s</strong>: <em>no full-duplex overlap under WDDM</em>. Async PCIe prefetch cannot hide transfers.</td>
+      </tr>
+      <tr>
+        <td>Host RAM (2x EPYC 7542, 256 GiB)</td>
+        <td class="num"><strong>120 GB/s</strong> NUMA0 (30T) / <strong>19.8 GB/s</strong> (1T)</td>
+        <td>Single-threaded host copies or NUMA1 spillover instantly turn into multi-second stalls.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>I also hit two measurement traps that would have ruined any casual tuning pass:</p>
+  <ol>
+    <li><strong>The speculative-row intercept trap</strong>: Decode windows obey <code>win_ms &approx; 6.64 + slope &times; avg_rows</code> (where 6.64 ms is the fixed dense weight read). When MTP acceptance varies slightly between runs, raw <code>win_ms / avg_rows</code> or raw <code>tok/s</code> lies. Every decode claim here uses exact matched-row pairs or intercept-adjusted slope <code>(win_ms - 6.64) / avg_rows</code>.</li>
+    <li><strong>The profiling-stamp illusion</strong>: An earlier profiler view blamed 7.07 ms on solo QSA attention. Auditing the source showed <code>batch_rec_</code> omitted timestamps 11/12, dumping <code>scores + topk + kv-resolve + attention</code> into one bucket. Pure solo QSA attention was only 0.32&ndash;0.61 ms.</li>
+  </ol>
+
+  <h2>3. Six First-Principles Optimizations (and One Honest Negative Result)</h2>
+
+  <h3>3.1 Why 4-Lane Streamed-KV Decode Blew Up: <code>RFC-K1</code> (-15.1% decode, 0 MiB VRAM)</h3>
+  <p>Under <code>--kv-resident 32768</code> (<code>kv_mode=1</code>, required to serve 4x100K contexts inside 48 GB VRAM), profiling exposed two silent fallbacks in batched decode:</p>
+  <ul>
+    <li><code>QSA_sel_res_attn</code> degraded <strong>2.48x</strong> to <strong>9.47 ms/win</strong> because <code>kv_mode=1</code> bypassed the <code>QSA_SLOTS</code> / <code>BATCH_ATTN_ROWS</code> fast paths, and <code>STRATA_ATTN_DAILY=1</code> forced a per-row <code>pre75_attn()</code> fallback.</li>
+    <li><code>batch_rec_</code> disabled <code>STRATA_SIDE_MIXER=2</code>, exposing <strong>3.34 ms/win</strong> of unhidden side-stream work (vs 0.09 ms solo).</li>
+  </ul>
+  <p>I implemented <code>kv_mode=1</code> slot-group batching for <code>scores + topk + resolve</code>, wrote a multi-slot <code>attn_chunk_slots_pre75_kernel</code> compatible with <code>STRATA_ATTN_DAILY=1</code>, and re-enabled <code>SIDE_MIXER=2</code> in batched windows. On a strictly matched 4x100K pair (<code>win=135, avg_rows=5.44</code>), <code>QSA_sel_res_attn</code> fell <strong>9.47 &rarr; 2.96 ms (-68.7%)</strong>, total <code>win_ms</code> dropped <strong>39.05 &rarr; 33.17 ms (-15.1%)</strong>, and the native <code>qsa_slots_parity</code> test passed <strong>16/16 bitwise <code>memcmp</code></strong> at <strong>0 MiB</strong> extra VRAM.</p>
+
+  <h3>3.2 The Negative Result That Changed My Design: <code>RFC-S1-L1</code> (Vetoed) &rarr; <code>RFC-S1-L2</code> (Merged)</h3>
+  <p>Each decode window spent <strong>1.82 ms</strong> in <code>bt_commit</code> and <strong>2.90 ms</strong> in <code>bt_emit</code>. My first intuition (<code>RFC-S1-L1</code>) was textbook systems engineering: make <code>commit_bm_</code> asynchronous and overlap 4 per-slot MTP draft streams concurrently.</p>
+
+  <div class="callout warn">
+    <strong>It backfired.</strong> <code>bt_commit</code> dropped from 1.85 &rarr; 0.10 ms on paper, yet <code>bt_emit</code> jumped 2.92 &rarr; 4.25 ms <em>and</em> <code>gpu_wait</code> regressed by <strong>+0.54 to +0.75 ms</strong> across every arm, with 300 W TDP cap hits rising (60&rarr;68, 60&rarr;66, 70&rarr;82). Net slope gain was &lt;0.5% (noise floor). I vetoed and excluded <code>RFC-S1-L1</code> from the release.
+  </div>
+
+  <p><strong>First-principles takeaway:</strong> When a single GPU is already saturated on its 713 GB/s GDDR6 bus and 300 W power ceiling, launching concurrent streams doesn't create bandwidth&mdash;it causes bus contention and WDDM queue tail spill. Auditing <code>bt_emit</code> showed 96% of its 2.90 ms was 4 serial calls to <code>slot_mtp-&gt;draft()</code> reading the MTP dense weights and <strong>248,320-vocab <code>lm_head</code> four separate times per window</strong>.</p>
+  <p>So I flipped the design (<code>RFC-S1-L2</code>): keep <code>commit</code> strictly synchronous, and build <strong>2-pass Multi-Slot Batched MTP</strong> (<code>STRATA_BATCH_MTP_FUSED=1</code>) to cut MTP + <code>lm_head</code> weight reads from <strong>4x &rarr; 1x</strong>. Result on matched 6-row arms: <code>emit</code> fell <strong>2.92 &rarr; 1.85 ms (-36.6%)</strong> with <strong>zero</strong> bucket shift into <code>commit</code> and <strong>zero</strong> tail spill into <code>gpu_wait</code>, for only 0.53 MiB staging memory.</p>
+
+  <figure>
+    <img src="assets/fig2_counterintuitive_anatomy.png" alt="100K cold session park OS zero-fill page fault breakdown and RFC-S1-L1 async commit negative result vs RFC-S1-L2 batched MTP">
+    <figcaption><strong>Figure 2.</strong> Two counterintuitive hardware findings from ABAB ablation. <strong>(a)</strong> 61%&ndash;81% of 100K cold session parking was single-threaded Windows demand-zero page faults inside <code>std::vector::resize()</code>, not PCIe transfer. <strong>(b)</strong> Making <code>commit</code> asynchronous only shifted work into <code>emit</code> and spilled +0.54&ndash;0.75 ms into <code>gpu_wait</code>; cutting 4x&rarr;1x MTP weight reads produced real, unshifted savings.</figcaption>
+  </figure>
+
+  <h3>3.3 100K Session Park Was an OS Page-Fault Bug, Not a PCIe Wall: <code>RFC-S3B</code> + <code>RFC-S3A</code> (5.7x&ndash;8.1x)</h3>
+  <p>When switching between 100K agent sessions, cold parking took <strong>1,056&ndash;1,121 ms</strong>. Everyone assumed PCIe Gen3 x16 was the culprit. Tracing with <code>STRATA_PARK_TRACE=1</code> showed the opposite: <strong>685&ndash;703 ms (61&ndash;81%) was single-threaded <code>std::vector::resize()</code> triggering Windows 4 KiB demand-zero page faults</strong>. Worse, parking a 14th 100K session exhausted NUMA0, spilling onto NUMA1 and doubling <code>resize()</code> to <strong>1,694 ms</strong>. And enabling async park previously allocated <strong>~1,600 MiB</strong> of VRAM staging because <code>kv_need</code> sized against full logical KV rather than device-resident bytes (a <strong>9x over-allocation</strong> under <code>kv_mode != 0</code>).</p>
+  <p>Fixing all four layers together&mdash;<code>VirtualAllocExNuma(0)</code> affinity (verified <code>on_node=256 off_node=0</code>), <code>resize_for_overwrite</code>, a persistent parallel <code>HostCopyPool</code>, exact device-resident VRAM staging, and TTL expiry on the retained <code>reuse_</code> buffer (<code>RFC-S3A</code>)&mdash;dropped <code>resize</code> from <strong>701 &rarr; 0.28&ndash;0.52 ms</strong>, cold park <strong>1,056 &rarr; 185 ms (5.7x)</strong>, hot reuse park <strong>126.5 &rarr; 15.7 ms (8.1x)</strong>, hot restore <strong>295 &rarr; 184&ndash;238 ms</strong>, and <strong>reclaimed ~1.3 GiB of VRAM</strong> (async stage down from ~1,600 to 306 MiB), with 596-char post-restore SHA-256 byte-exact parity.</p>
+
+  <h3>3.4 Empirical Sparse-Prefill Crossover &amp; Host IPC: <code>RFC-K3 v2</code> and <code>RFC-S2A-1/2</code></h3>
+  <p>Small incremental agent turns (130&ndash;600 new tokens appended to a 100K cached prompt) suffered two hidden penalties: full-prefix KV staging (~98 ms constant regardless of how few pages attention needed) and lending/refilling 391&ndash;473 VRAM expert cache slots (~56&ndash;68 ms) on every turn.</p>
+  <p>I built <strong>Selection-First sparse prefill KV</strong> (<code>RFC-K3-A</code>) paired with a dedicated small-chunk workspace (<code>RFC-K3-B</code>, &le;768 tok, 0 slots lent). Measuring the clean <code>CHECK=0</code> curve (after stripping 480 debug stream syncs) exposed an exact physical crossover at <strong><code>T &approx; 350&ndash;380</code> tokens</strong>: sparse sub-batches launch only <code>15 &times; 2 = 30 CTAs</code> across 84 SMs (35.7% SM occupancy), so sparse wins decisively below 256 tokens (<code>941 &rarr; 727 ms, -22.8%</code> at 155 tok) and loses above 380 tokens. Setting the auto-guard at <code>SPARSE_MAX_T=256</code> gives sparse gains on small turns and seamlessly routes 257&ndash;768 tok through K3-B with zero cache borrowing.</p>
+
+  <p>Finally, on the host layer (167K context took <strong>135.1 ms</strong> outside the engine), profiling killed two popular myths immediately: Jinja templating was only <strong>1.28 ms</strong> and warm BPE tokenization was <strong>2.90 ms</strong>. Over 84% of the scaling cost came from Python <code>','.join</code> ASCII serialization plus an <strong>O(N<sup>2</sup>) newline rescan</strong> inside C++ <code>getline_fd</code>. Fixing <code>getline_fd</code> with a 64 KiB buffered reader + zero-copy <code>BGEN</code>/<code>std::from_chars</code> (<code>RFC-S2A-1</code>) and adding CRC32+Adler32 text delta token IPC with automatic <code>REF_MISS</code> full fallback (<code>RFC-S2A-2</code>) cut 167K host overhead to <strong>62.9 ms (-53.4%)</strong>. Because the remaining Python proxy overhead was only <strong>~10&ndash;15 ms</strong>, I rejected rewriting the HTTP proxy in Rust.</p>
+
+  <figure>
+    <img src="assets/fig3_sparse_prefill_and_host.png" alt="Sparse prefill KV empirical crossover at T=350-380 tokens and 167K host-outside-engine latency reduction (-53.4%)">
+    <figcaption><strong>Figure 3.</strong> <strong>(a)</strong> Clean <code>CHECK=0</code> empirical crossover for Selection-First sparse prefill at 100K context (<code>T &approx; 350&ndash;380</code> tok); defaulting to <code>T &le; 256</code> captures the -25% to -33% win while routing larger chunks to K3-B zero-borrow staging. <strong>(b)</strong> Eliminating C++ O(N<sup>2</sup>) <code>getline_fd</code> scanning and adding delta token IPC cut 167K host latency by 53.4%, proving a Rust proxy rewrite was unnecessary.</figcaption>
+  </figure>
+
+  <h2>4. Upstream Contributions &amp; Reproducible Artifacts</h2>
+
+  <p>Rather than leaving these fixes trapped in a private fork, I ported all six clean engine optimizations onto upstream <code>Niko1221/Strata</code> <code>main</code> (<code>v0.2.18</code> / engine <code>0.1.64</code>), compiled and unit-tested every PR natively on RTX A6000, and opened six evidence-backed pull requests:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>PR</th>
+        <th>State</th>
+        <th>Scope &amp; Evidence</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6543">#6543</a></td>
+        <td>Ready</td>
+        <td>Guard 7 negative <code>page_table</code> entries in <code>qsa_prompt_attn</code> + monotonic <code>kv_stream</code> <code>overflow_count</code> (<code>kv_stream_parity</code> 4 formats PASS).</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6544">#6544</a></td>
+        <td>Ready</td>
+        <td>Fix O(N<sup>2</sup>) scan in <code>getline_fd</code> + zero-copy <code>BGEN</code> / <code>std::from_chars</code> (-20.3% at 167K host layer).</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6545">#6545</a></td>
+        <td>Ready</td>
+        <td>Fix 9x <code>STRATA_PARK_ASYNC</code> VRAM over-allocation under <code>kv_mode != 0</code> (~1,600 &rarr; 306 MiB).</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6546">#6546</a></td>
+        <td>Ready</td>
+        <td>Opt-in <code>resize_for_overwrite</code> + parallel <code>HostCopyPool</code> for <code>kv_mode != 0</code> park/restore (5.7x&ndash;8.1x park speedup).</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6547">#6547</a></td>
+        <td>Draft</td>
+        <td>Opt-in Multi-Slot Batched MTP (<code>STRATA_BATCH_MTP_FUSED</code>; 4x&rarr;1x weight reads, <code>emit</code> -36.6%).</td>
+      </tr>
+      <tr>
+        <td><a href="https://github.com/Niko1221/Strata/pull/6548">#6548</a></td>
+        <td>Draft</td>
+        <td>Opt-in streamed-KV QSA slot-group batching, <code>pre75</code> multi-slot kernel, and batch <code>SIDE_MIXER</code> (16/16 bitwise parity, 0 MiB VRAM).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>5. Honest Falsified List &amp; Scope Limitations</h2>
+
+  <p>Recording what did <em>not</em> work saved just as much time as what did:</p>
+  <ul>
+    <li><strong>Standalone <code>STRATA_BATCH_COMMIT_ASYNC=1</code> (<code>RFC-S1-L1</code>)</strong>: Vetoed due to GDDR6 + 300 W TDP bus contention and WDDM tail spill.</li>
+    <li><strong><code>STRATA_KV_PREFETCH=1</code></strong>: Zero gain under WDDM PCIe Gen3 x16 (no full-duplex overlap).</li>
+    <li><strong>Cross-layer persistent Megakernel on <code>sm_86</code></strong>: 6 MB L2 and 8.3 MB total shared memory across 84 SMs cannot keep multi-gigabyte HBM MoE weights resident on-chip.</li>
+    <li><strong>Solo <code>STRATA_QSA_SPLIT_ATTN=1</code></strong> (-0.07 ms, below noise), <strong>Jinja caching</strong> (1.28 ms total), and <strong>Rust HTTP proxy rewrite</strong> (~10&ndash;15 ms Python residual).</li>
+  </ul>
+
+  <p><strong>Explicit boundaries I want readers to know up front:</strong></p>
+  <ul>
+    <li>All v0.2 full-stack benchmarks were measured on one workstation GPU (RTX A6000 48 GB, Windows WDDM, PCIe Gen3 x16), one model (<code>Qwen3.8-Flash-Next IQ3_XXS</code>), and one engine baseline (<code>Strata 0.1.56</code>). Cross-engine comparisons against <code>llama.cpp</code> / <code>KTransformers</code> and Linux measurements remain future work.</li>
+    <li>The 16 GiB RTX 5060 Ti numbers (<code>51.8&ndash;54.4 tok/s</code>) are from my v0.1 Oct&ndash;Nov 4 baseline study, not re-run with the v0.2 A6000 patches.</li>
+    <li>For v0.2, numerical integrity was verified via kernel/continuation bitwise parity (<code>qsa_slots_parity</code> 16/16 <code>memcmp</code>, 100K park&rarr;restore 596-char SHA-256, 100K WDDM 575/596-char byte-exact, <code>res4096 ovf=0</code>) plus 10/10 functional acceptance (262K, vision, 3 protocols, tool calling, 4-way concurrency), rather than re-running the full 24,574-line teacher-forcing harness from v0.1.</li>
+    <li>With all six optimizations active on A6000, minimum free VRAM stays at <strong>4,703&ndash;4,723 MiB</strong> (well above my 2,048 MiB floor). Three operational guardrails remain mandatory: keep <code>STRATA_BATCH_MTP_ATTN_SLOTS</code> unset (enforcing its &le;32 MiB auto-guard), keep <code>STRATA_PREFILL_SPARSE_CHECK=0</code> in steady state, and never enable <code>STRATA_BATCH_COMMIT_ASYNC=1</code>.</li>
+  </ul>
+
+  <footer>
+    <p>Sanitized JSON datasets, plotting scripts, offline verification suite (<code>python -m unittest discover -s tests -v</code> &amp; <code>python examples/verify_results.py</code>), and Chinese/English full reports live in <a href="https://github.com/YusenZhang0601/moe-residency-lab">github.com/YusenZhang0601/moe-residency-lab</a>. Compiled fork release: <a href="https://github.com/YusenZhang0601/Strata/tree/personal-0.1.56-p2">YusenZhang0601/Strata@personal-0.1.56-p2</a>.</p>
+  </footer>
+</main>
+</body>
+</html>
